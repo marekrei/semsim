@@ -121,10 +121,9 @@ public class HyponymDetection {
 		String modelPath = "/anfs/bigdisc/mr472/SemTensor/model1"; 
 		
 		SemModel semModel = new SemModel(true, modelPath);
-		//semModel.makeTensorSymmetric();
+		semModel.makeTensorSymmetric();
 		VectorSpace vectorSpace = new VectorSpace(semModel, VectorSpace.WEIGHT_PMI_LIM, true);
-		HyponymDetection hyponymDetection = new HyponymDetection();
-		
+		 
 		// We run it on many gold standard files in a row. Feel free to change this.
 		LinkedHashMap<String,String> inputFiles = new LinkedHashMap<String,String>();
 		for(String pos : Arrays.asList("noun", "verb")){
@@ -136,8 +135,6 @@ public class HyponymDetection {
 		inputFiles.put("/anfs/bigdisc/mr472/corpora/LexEntail-Dagan/judgements_filtered.txt", "noun");
 
 		for(SimMeasure simMeasure : SimMeasure.values()){
-			if(simMeasure == SimMeasure.KENDALLS_TAU || simMeasure == SimMeasure.PEARSON || simMeasure == SimMeasure.SPEARMAN)
-				continue;
 			System.out.print(simMeasure.getLabel());
 			for(String inputFile : inputFiles.keySet()){
 				LinkedHashMap<Pair<String>,Integer> goldPairs = readGold(inputFile, inputFiles.get(inputFile));
