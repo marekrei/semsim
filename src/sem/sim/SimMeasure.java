@@ -73,7 +73,7 @@ public enum SimMeasure {
 	
 	
 	
-	public static void validateVectors(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> void validateVectors(HashMap<T,Double> a, HashMap<T,Double> b){
 		if(a == null || b == null)
 			throw new IllegalArgumentException("Vectors cannot be null");
 	}
@@ -85,9 +85,9 @@ public enum SimMeasure {
 			throw new RuntimeException("Similarity is NaN");
 	}
 	
-	public static HashMap<Integer,Double> fillVector(HashMap<Integer,Double> mainVector, HashMap<Integer,Double> referenceVector){
-		HashMap<Integer,Double> newVector = new HashMap<Integer,Double>(mainVector);
-		for(Integer key : referenceVector.keySet())
+	public static <T> HashMap<T,Double> fillVector(HashMap<T,Double> mainVector, HashMap<T,Double> referenceVector){
+		HashMap<T,Double> newVector = new HashMap<T,Double>(mainVector);
+		for(T key : referenceVector.keySet())
 			if(!newVector.containsKey(key))
 				newVector.put(key, 0.0);
 		return newVector;
@@ -99,7 +99,7 @@ public enum SimMeasure {
 	 * @param b
 	 * @return
 	 */
-	public static double cosine(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double cosine(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		if(a.size() > b.size())
@@ -111,14 +111,14 @@ public enum SimMeasure {
 
 		Double tempDouble;
 		
-		for(Entry<Integer,Double> entry : a.entrySet()){
+		for(Entry<T,Double> entry : a.entrySet()){
 			tempDouble = b.get(entry.getKey());
 			if(tempDouble != null)
 				dotProduct += entry.getValue() * tempDouble;
 			aLength += entry.getValue() * entry.getValue();
 		}
 		
-		for(Entry<Integer,Double> entry : b.entrySet())
+		for(Entry<T,Double> entry : b.entrySet())
 			bLength += entry.getValue() * entry.getValue();
 		
 		double result;
@@ -136,11 +136,11 @@ public enum SimMeasure {
 	 * @param b
 	 * @return
 	 */
-	public static double pearson(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double pearson(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
-		HashMap<Integer,Double> a2 = fillVector(a, b);
-		HashMap<Integer,Double> b2 = fillVector(b, a);
+		HashMap<T,Double> a2 = fillVector(a, b);
+		HashMap<T,Double> b2 = fillVector(b, a);
 		
 		double result = Tools.pearson(a2, b2);
 		validateResult(result);
@@ -153,11 +153,11 @@ public enum SimMeasure {
 	 * @param b
 	 * @return
 	 */
-	public static double spearman(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double spearman(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
-		HashMap<Integer,Double> a2 = fillVector(a, b);
-		HashMap<Integer,Double> b2 = fillVector(b, a);
+		HashMap<T,Double> a2 = fillVector(a, b);
+		HashMap<T,Double> b2 = fillVector(b, a);
 		
 		double result = Tools.spearman(a2, b2);
 		validateResult(result);
@@ -171,17 +171,17 @@ public enum SimMeasure {
 	 * @param b
 	 * @return
 	 */
-	public static double jaccardSet(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double jaccardSet(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		if(a.size() > b.size())
 			return jaccardSet(b, a);
 		
 		double intersectionSize = 0;
-		HashSet<Integer> union = new HashSet<Integer>();
+		HashSet<T> union = new HashSet<T>();
 		Double bValue;
 		
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			bValue = b.get(e.getKey());
 			if(bValue != null && bValue != 0.0)
 				intersectionSize++;
@@ -189,7 +189,7 @@ public enum SimMeasure {
 				union.add(e.getKey());
 		}
 		
-		for(Entry<Integer,Double> e : b.entrySet()){
+		for(Entry<T,Double> e : b.entrySet()){
 			if(e.getValue() != null && e.getValue() != 0.0)
 				union.add(e.getKey());
 		}
@@ -210,7 +210,7 @@ public enum SimMeasure {
 	 * @param b
 	 * @return
 	 */
-	public static double lin(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double lin(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		if(a.size() > b.size())
@@ -221,7 +221,7 @@ public enum SimMeasure {
 		double combinedSum = 0.0;
 		
 		Double bValue;
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			if(e.getValue() <= 0.0)
 				continue;
 			bValue = b.get(e.getKey());
@@ -230,7 +230,7 @@ public enum SimMeasure {
 			aSum += e.getValue();
 		}
 		
-		for(Entry<Integer,Double> e : b.entrySet())
+		for(Entry<T,Double> e : b.entrySet())
 			if(e.getValue() > 0.0)
 				bSum += e.getValue();
 		
@@ -244,7 +244,7 @@ public enum SimMeasure {
 	}
 	
 	
-	public static double diceSet(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double diceSet(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		if(a.size() > b.size())
@@ -253,7 +253,7 @@ public enum SimMeasure {
 		double sharedCount = 0.0, aCount = 0.0, bCount = 0.0;
 		Double bValue;
 		
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			bValue = b.get(e.getKey());
 			if(bValue != null && bValue != 0.0)
 				sharedCount++;
@@ -276,7 +276,7 @@ public enum SimMeasure {
 	}
 	
 	
-	public static double overlapSet(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double overlapSet(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		if(a.size() > b.size())
@@ -285,7 +285,7 @@ public enum SimMeasure {
 		double sharedCount = 0.0, aCount = 0.0, bCount = 0.0;
 		Double bValue;
 		
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			bValue = b.get(e.getKey());
 			if(bValue != null && bValue != 0.0)
 				sharedCount++;
@@ -307,7 +307,7 @@ public enum SimMeasure {
 		return result;
 	}
 	
-	public static double cosineSet(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double cosineSet(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		if(a.size() > b.size())
@@ -316,7 +316,7 @@ public enum SimMeasure {
 		double sharedCount = 0.0, aCount = 0.0, bCount = 0.0;
 		Double bValue;
 		
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			bValue = b.get(e.getKey());
 			if(bValue != null && bValue != 0.0)
 				sharedCount++;
@@ -339,13 +339,13 @@ public enum SimMeasure {
 	}
 	
 	
-	public static double jaccardGen(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double jaccardGen(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 
 		double minSum = 0.0, maxSum = 0.0;
 		
 		Double bValue;
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			bValue = b.get(e.getKey());
 			if(bValue != null){
 				minSum += Math.min(e.getValue(), bValue);
@@ -355,7 +355,7 @@ public enum SimMeasure {
 				maxSum += e.getValue();
 		}
 		
-		for(Entry<Integer,Double> e : b.entrySet()){
+		for(Entry<T,Double> e : b.entrySet()){
 			if(!a.containsKey(e.getKey()))
 				maxSum += e.getValue();
 		}
@@ -370,20 +370,20 @@ public enum SimMeasure {
 	}
 	
 	
-	public static double diceGen(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double diceGen(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 
 		double minSum = 0.0, sum = 0.0;
 		
 		Double bValue;
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			bValue = b.get(e.getKey());
 			if(bValue != null)
 				minSum += Math.min(e.getValue(), bValue);
 			sum += e.getValue();
 		}
 		
-		for(Entry<Integer,Double> e : b.entrySet()){
+		for(Entry<T,Double> e : b.entrySet()){
 			sum += e.getValue();
 		}
 
@@ -403,20 +403,20 @@ public enum SimMeasure {
 	 * @param b
 	 * @return
 	 */
-	public static double diceGen2(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double diceGen2(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 
 		double uSum = 0.0, sum = 0.0;
 		
 		Double bValue;
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			bValue = b.get(e.getKey());
 			if(bValue != null)
 				uSum += e.getValue() * bValue;
 			sum += e.getValue();
 		}
 		
-		for(Entry<Integer,Double> e : b.entrySet()){
+		for(Entry<T,Double> e : b.entrySet()){
 			sum += e.getValue();
 		}
 
@@ -429,32 +429,32 @@ public enum SimMeasure {
 		return result;
 	}
 	
-	private static ArrayList<Integer> getUnion(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
-		HashSet<Integer> keys = new HashSet<Integer>();
+	private static <T> ArrayList<T> getUnion(HashMap<T,Double> a, HashMap<T,Double> b){
+		HashSet<T> keys = new HashSet<T>();
 		
-		for(Integer key : a.keySet()){
+		for(T key : a.keySet()){
 			keys.add(key);
 		}
 		
-		for(Integer key : b.keySet()){
+		for(T key : b.keySet()){
 			keys.add(key);
 		}
 		
-		return new ArrayList<Integer>(keys);
+		return new ArrayList<T>(keys);
 	}
 	
-	public static double kendallsTau(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double kendallsTau(HashMap<T,Double> a, HashMap<T,Double> b){
 		return kendallsTauFast(a, b);
 	}
 	
-	public static double getValue(HashMap<Integer,Double> a, Integer key){
+	public static <T> double getValue(HashMap<T,Double> a, T key){
 		Double value = a.get(key);
 		if(value == null)
 			return 0.0;
 		return value.doubleValue();
 	}
 	
-	private static double kendallsTauMergeSort(ArrayList<Integer> x, HashMap<Integer,Double> ref, int offset, int length){
+	private static <T> double kendallsTauMergeSort(ArrayList<T> x, HashMap<T,Double> ref, int offset, int length){
 		double exchcnt = 0;
 		if(length == 0 || length == 1){
 			return 0;
@@ -464,7 +464,7 @@ public enum SimMeasure {
 				return 0;
 			}
 			else{
-				Integer t = x.get(offset);
+				T t = x.get(offset);
 				x.remove(offset);
 				x.add(offset+1, t);
 				return 1;
@@ -478,7 +478,7 @@ public enum SimMeasure {
 			exchcnt += kendallsTauMergeSort(x, ref, middle, length1);
 			// Merging
 			int j = 0, k = 0;
-			ArrayList<Integer> tempList = new ArrayList<Integer>();
+			ArrayList<T> tempList = new ArrayList<T>();
 			while(j < length0 || k < length1){
 				if(k >= length1 || (j < length0 && getValue(ref, x.get(offset+j)) <= getValue(ref, x.get(middle+k)))){
 					// pop from left sublist
@@ -500,18 +500,18 @@ public enum SimMeasure {
 		return exchcnt;
 	}
 	
-	public static double kendallsTauFast(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
-		class KendallsComparator implements Comparator<Integer>{
-			private HashMap<Integer,Double> a;
-			private HashMap<Integer,Double> b;
+	public static <T> double kendallsTauFast(HashMap<T,Double> a, HashMap<T,Double> b){
+		class KendallsComparator implements Comparator<T>{
+			private HashMap<T,Double> a;
+			private HashMap<T,Double> b;
 			
-			public KendallsComparator(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+			public KendallsComparator(HashMap<T,Double> a, HashMap<T,Double> b){
 				this.a = a;
 				this.b = b;
 			}
 			
 			@Override
-			public int compare(Integer keyi, Integer keyj) {
+			public int compare(T keyi, T keyj) {
 				double ai = a.containsKey(keyi)?a.get(keyi):0.0;
 	            double aj = a.containsKey(keyj)?a.get(keyj):0.0;
 	            if(ai < aj)
@@ -535,9 +535,9 @@ public enum SimMeasure {
 		
 		int i;
 		//ArrayList<Integer> keys = getUnion(a, b);
-		LinkedHashSet<Integer> keySet = new LinkedHashSet<Integer>(a.keySet());
+		LinkedHashSet<T> keySet = new LinkedHashSet<T>(a.keySet());
 		keySet.addAll(b.keySet());
-		ArrayList<Integer> keys = new ArrayList<Integer>(keySet);
+		ArrayList<T> keys = new ArrayList<T>(keySet);
 		
 		// Sort by values of a and, if tied, by values of b.
 		Collections.sort(keys, new KendallsComparator(a, b));
@@ -607,20 +607,21 @@ public enum SimMeasure {
 		return tau;
 	}
 	
-	public static double kendallsTauSlow(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T extends Comparable<T>> double kendallsTauSlow(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 
-		ArrayList<Integer> keys = getUnion(a, b);
+		ArrayList<T> keys = getUnion(a, b);
 		
 		Collections.sort(keys);
 		
-		HashMap<Integer,Double> tiesA = new HashMap<Integer,Double>();
-		HashMap<Integer,Double> tiesB = new HashMap<Integer,Double>();
+		HashMap<T,Double> tiesA = new HashMap<T,Double>();
+		HashMap<T,Double> tiesB = new HashMap<T,Double>();
 		double concordance = 0.0;
+		T keyi, keyj;
 		for(int i = 0; i < keys.size(); i++){
-			Integer keyi = keys.get(i);
+			keyi = keys.get(i);
 			for(int j = i+1; j < keys.size(); j++){
-				Integer keyj = keys.get(j);
+				keyj = keys.get(j);
 				
 				double ai = a.containsKey(keyi)?a.get(keyi):0.0;
                 double aj = a.containsKey(keyj)?a.get(keyj):0.0;
@@ -683,12 +684,12 @@ public enum SimMeasure {
 	}
 	
 
-	public static double clarkeDE(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double clarkeDE(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		double minSum = 0.0, aSum = 0.0;
 		Double bValue;
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			aSum += e.getValue();
 			bValue = b.get(e.getKey());
 			if(bValue != null){
@@ -705,12 +706,12 @@ public enum SimMeasure {
 		return result;
 	}
 	
-	public static double weedsPrec(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double weedsPrec(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		double sumA = 0.0, sumBoth = 0.0;
 		Double bValue;
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			if(e.getValue() > 0.0){
 				sumA += e.getValue();
 				bValue = b.get(e.getKey());
@@ -729,7 +730,7 @@ public enum SimMeasure {
 		return result;
 	}
 	
-	public static double weedsRec(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double weedsRec(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		double result = weedsPrec(b, a);
@@ -737,7 +738,7 @@ public enum SimMeasure {
 		return result;
 	}
 	
-	public static double weedsF(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double weedsF(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		double prec = weedsPrec(a, b);
@@ -752,14 +753,14 @@ public enum SimMeasure {
 		return result;
 	}
 	
-	public static double ap(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double ap(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
-		LinkedHashMap<Integer,Double> aSorted = Tools.sort(a, true);
+		LinkedHashMap<T,Double> aSorted = Tools.sort(a, true);
 		
 		int r = 0;
 		double sum = 0.0, correctReturned = 0.0;
-		for(Integer key : aSorted.keySet()){
+		for(T key : aSorted.keySet()){
 			r++;
 			
 			if(b.containsKey(key)){
@@ -777,22 +778,22 @@ public enum SimMeasure {
 		return result;
 	}
 	
-	public static double apInc(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double apInc(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
-		LinkedHashMap<Integer,Double> aSorted = Tools.sort(a, true);
-		LinkedHashMap<Integer,Double> bSorted = Tools.sort(b, true);
-		HashMap<Integer,Integer> bRanks = new HashMap<Integer,Integer>();
+		LinkedHashMap<T,Double> aSorted = Tools.sort(a, true);
+		LinkedHashMap<T,Double> bSorted = Tools.sort(b, true);
+		HashMap<T,Integer> bRanks = new HashMap<T,Integer>();
 		
 		int r = 0;
-		for(Integer key : bSorted.keySet()){
+		for(T key : bSorted.keySet()){
 			r++;
 			bRanks.put(key, r);
 		}
 		
 		r = 0;
 		double sum = 0.0, correctReturned = 0.0, p, rel;
-		for(Integer key : aSorted.keySet()){
+		for(T key : aSorted.keySet()){
 			r++;
 			
 			if(b.containsKey(key)){
@@ -812,7 +813,7 @@ public enum SimMeasure {
 		return result;
 	}
 	
-	public static double balAPInc(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double balAPInc(HashMap<T,Double> a, HashMap<T,Double> b){
 		double lin = lin(a, b);
 		double apInc = apInc(a, b);
 		double result = Math.sqrt(lin * apInc);
@@ -820,7 +821,7 @@ public enum SimMeasure {
 		return result;
 	}
 	
-	public static double linD(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double linD(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		double aSum = 0.0;
@@ -828,7 +829,7 @@ public enum SimMeasure {
 		double combinedSum = 0.0;
 		
 		Double bValue;
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			if(e.getValue() <= 0.0)
 				continue;
 			bValue = b.get(e.getKey());
@@ -848,7 +849,7 @@ public enum SimMeasure {
 		return result;
 	}
 	
-	public static double balPrec(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double balPrec(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		double lin = lin(a, b);
@@ -866,12 +867,12 @@ public enum SimMeasure {
 	 * @param b
 	 * @return
 	 */
-	public static double klDivergence(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double klDivergence(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		double divergence = 0;
 		Double aValue;
-		for (Entry<Integer,Double> e : b.entrySet()) {
+		for (Entry<T,Double> e : b.entrySet()) {
 			aValue = a.get(e.getKey());
 			if (aValue != null && aValue > 0.0 && e.getValue() > 0.0)
 				divergence += e.getValue() * Math.log(e.getValue()/ aValue);
@@ -880,34 +881,17 @@ public enum SimMeasure {
 		validateResult(divergence);
 		return divergence;
 	}
-
-	/*
-	public static double klDivergenceR(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
-		validateVectors(a, b);
-		
-		double divergence = 0;
-		Double bValue;
-		for (Entry<Integer,Double> e : a.entrySet()) {
-			bValue = b.get(e.getKey());
-			if (bValue != null && bValue > 0.0 && e.getValue() > 0.0)
-				divergence += e.getValue() * Math.log(e.getValue()/ bValue);
-		}
-
-		validateResult(divergence);
-		return divergence;
-	}
-	*/
 	
-	public static double klDivergenceR(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double klDivergenceR(HashMap<T,Double> a, HashMap<T,Double> b){
 		return klDivergence(b, a);
 	}
 	
-	public static double jsDivergence(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double jsDivergence(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		double divergence = 0;
 		Double aValue, bValue;
-		for (Entry<Integer,Double> e : a.entrySet()) {
+		for (Entry<T,Double> e : a.entrySet()) {
 			bValue = b.get(e.getKey());
 			if (bValue != null && bValue > 0.0 && e.getValue() > 0.0)
 				divergence += e.getValue() * Math.log(e.getValue()/ ((e.getValue() + bValue)/2));
@@ -915,7 +899,7 @@ public enum SimMeasure {
 				divergence += e.getValue() * Math.log(e.getValue()/ (e.getValue()/2));
 		}
 		
-		for (Entry<Integer,Double> e : b.entrySet()) {
+		for (Entry<T,Double> e : b.entrySet()) {
 			if(e.getValue() <= 0.0)
 				continue;
 			aValue = a.get(e.getKey());
@@ -929,13 +913,13 @@ public enum SimMeasure {
 		return divergence;
 	}
 	
-	public static double alphaSkew(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double alphaSkew(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		double alpha = 0.99;
 		
 		double divergence = 0;
 		Double aValue;
-		for (Entry<Integer,Double> e : b.entrySet()) {
+		for (Entry<T,Double> e : b.entrySet()) {
 			aValue = a.get(e.getKey());
 			if (aValue != null && aValue > 0.0 && e.getValue() > 0.0)
 				divergence += e.getValue() * Math.log(e.getValue()/ ((1-alpha) * e.getValue() + alpha * aValue));
@@ -947,36 +931,16 @@ public enum SimMeasure {
 		return divergence;
 	}
 	
-	/*
-	public static double alphaSkewR(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
-		validateVectors(a, b);
-		double alpha = 0.99;
-		
-		double divergence = 0;
-		Double bValue;
-		for (Entry<Integer,Double> e : a.entrySet()) {
-			bValue = b.get(e.getKey());
-			if (bValue != null && bValue > 0.0 && e.getValue() > 0.0)
-				divergence += e.getValue() * Math.log(e.getValue()/ ((1-alpha) * e.getValue() + alpha * bValue));
-			else if((bValue == null || bValue > 0.0) && e.getValue() > 0.0)
-				divergence += e.getValue() * Math.log(e.getValue()/ ((1-alpha) * e.getValue()));
-		}
-
-		validateResult(divergence);
-		return divergence;
-	}
-	*/
-	
-	public static double alphaSkewR(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double alphaSkewR(HashMap<T,Double> a, HashMap<T,Double> b){
 		return alphaSkew(b, a);
 	}
 	
-	public static double manhattan(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double manhattan(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		double sum = 0.0;
 		Double bValue;
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			bValue = b.get(e.getKey());
 			if(bValue != null)
 				sum += Math.abs(e.getValue() - bValue);
@@ -984,7 +948,7 @@ public enum SimMeasure {
 				sum += Math.abs(e.getValue());
 		}
 		
-		for(Entry<Integer,Double> e : b.entrySet()){
+		for(Entry<T,Double> e : b.entrySet()){
 			if(!a.containsKey(e.getKey()))
 				sum += Math.abs(e.getValue());
 		}
@@ -993,12 +957,12 @@ public enum SimMeasure {
 		return sum;
 	}
 	
-	public static double euclidean(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double euclidean(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		double sum = 0.0;
 		Double bValue;
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			bValue = b.get(e.getKey());
 			if(bValue != null)
 				sum += Math.pow(e.getValue() - bValue, 2);
@@ -1006,7 +970,7 @@ public enum SimMeasure {
 				sum += Math.pow(e.getValue(), 2);
 		}
 		
-		for(Entry<Integer,Double> e : b.entrySet()){
+		for(Entry<T,Double> e : b.entrySet()){
 			if(!a.containsKey(e.getKey()))
 				sum += Math.pow(e.getValue(), 2);
 		}
@@ -1016,12 +980,12 @@ public enum SimMeasure {
 		return result;
 	}
 	
-	public static double chebyshev(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double chebyshev(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		double max = 0.0;
 		Double bValue;
-		for(Entry<Integer,Double> e : a.entrySet()){
+		for(Entry<T,Double> e : a.entrySet()){
 			bValue = b.get(e.getKey());
 			if(bValue != null && Math.abs(e.getValue() - bValue) > max)
 				max = Math.abs(e.getValue() - bValue);
@@ -1029,7 +993,7 @@ public enum SimMeasure {
 				max = Math.abs(e.getValue());
 		}
 		
-		for(Entry<Integer,Double> e : b.entrySet()){
+		for(Entry<T,Double> e : b.entrySet()){
 			if(!a.containsKey(e.getKey()) && Math.abs(e.getValue()) > max)
 				max = Math.abs(e.getValue());
 		}
@@ -1038,7 +1002,7 @@ public enum SimMeasure {
 		return max;
 	}
 	
-	public static double weightedCosine(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double weightedCosine(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		double C = 0.5;
@@ -1053,8 +1017,8 @@ public enum SimMeasure {
 
 		Double aValue, bValue;
 
-		HashMap<Integer,Double> ranks = Tools._convert_to_ranks(b);
-		for(Entry<Integer,Double> entry : Tools.sort(b, true).entrySet()){
+		HashMap<T,Double> ranks = Tools._convert_to_ranks(b);
+		for(Entry<T,Double> entry : Tools.sort(b, true).entrySet()){
 			bValue = entry.getValue();
 			aValue = a.get(entry.getKey());
 			if(aValue != null){
@@ -1069,7 +1033,7 @@ public enum SimMeasure {
 			}
 		}
 		
-		for(Entry<Integer,Double> entry : a.entrySet()){
+		for(Entry<T,Double> entry : a.entrySet()){
 			if(!b.containsKey(entry.getKey()))
 				aLength += Math.pow(C * entry.getValue(), 2.0);
 		}
@@ -1091,7 +1055,7 @@ public enum SimMeasure {
 	 * @param b
 	 * @return
 	 */
-	public static double weightedCosine2(HashMap<Integer,Double> a, HashMap<Integer,Double> b){
+	public static <T> double weightedCosine2(HashMap<T,Double> a, HashMap<T,Double> b){
 		validateVectors(a, b);
 		
 		double C = 0.5;
@@ -1109,7 +1073,7 @@ public enum SimMeasure {
 		int count = 0;
 		double rank = 0.0;
 		double previousValue = 0.0;
-		for(Entry<Integer,Double> entry : Tools.sort(b, true).entrySet()){
+		for(Entry<T,Double> entry : Tools.sort(b, true).entrySet()){
 			count++;
 			if(count == 1 || !entry.getValue().equals(previousValue)){
 				rank = count;
@@ -1129,7 +1093,7 @@ public enum SimMeasure {
 			}
 		}
 		
-		for(Entry<Integer,Double> entry : a.entrySet()){
+		for(Entry<T,Double> entry : a.entrySet()){
 			if(!b.containsKey(entry.getKey()))
 				aLength += Math.pow(C * entry.getValue(), 2.0);
 		}
@@ -1145,7 +1109,7 @@ public enum SimMeasure {
 	}
 	
 	
-	public double sim(LinkedHashMap<Integer,Double> v1, LinkedHashMap<Integer,Double> v2){
+	public <T> double sim(LinkedHashMap<T,Double> v1, LinkedHashMap<T,Double> v2){
 		switch(this){
 		case COSINE:
 			return SimMeasure.cosine(v1, v2);
