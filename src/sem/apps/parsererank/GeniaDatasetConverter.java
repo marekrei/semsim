@@ -3,9 +3,9 @@ package sem.apps.parsererank;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import sem.exception.GraphFormatException;
 import sem.graph.Graph;
 import sem.graph.Node;
-import sem.graphreader.GraphFormatException;
 import sem.graphreader.ParsevalGraphReader;
 import sem.util.FileReader;
 

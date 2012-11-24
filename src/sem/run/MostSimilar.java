@@ -18,7 +18,7 @@ import sem.util.Tools;
 public class MostSimilar {
 	public static void main(String[] args) {
 		if(args.length == 4 || args.length == 5){
-			SemModel semModel = new SemModel(false, args[0]);
+			SemModel semModel = new SemModel(args[0], false);
 			if(semModel == null)
 				throw new RuntimeException("Model is null");
 			
@@ -29,6 +29,7 @@ public class MostSimilar {
 			int frequencyLimit = Integer.parseInt(args[2]);
 			int resultLimit = Integer.parseInt(args[3]);
 			
+			semModel.makeTensorSymmetric();
 			VectorSpace vectorSpace = new VectorSpace(semModel, VectorSpace.WEIGHT_PMI_LIM, true);
 			SimFinder simFinder = new SimFinder(vectorSpace);
 			

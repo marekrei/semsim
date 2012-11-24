@@ -2,9 +2,12 @@ package sem.grapheditor;
 
 import java.util.HashSet;
 
-import sem.graph.Edge;
 import sem.graph.Graph;
 
+/**
+ * GraphEditor for explicitly adding null-edges (non-existant edges)
+ *
+ */
 public class NullEdgesGraphEditor implements GraphEditor{
 
 	public static String nullEdgeLabel = "nulledge";

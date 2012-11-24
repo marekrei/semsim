@@ -7,6 +7,10 @@ import sem.graph.Graph;
 import sem.graph.Edge;
 import sem.graph.Node;
 
+/**
+ * GraphEditor for adding new nodes with reduced information to the graph
+ *
+ */
 public class AddNodesGraphEditor implements GraphEditor{
 
 	private int parameter;

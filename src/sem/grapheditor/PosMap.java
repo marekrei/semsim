@@ -7,8 +7,9 @@ import sem.util.StringMap;
  *
  */
 public class PosMap extends StringMap{
-	public PosMap(){
-		super("tagsets/claws2-universal.txt");
+	public PosMap(String posMapPath){
+		//super("/auto/homes/mr472/Documents/Projects/SemSim/tagsets/claws2-universal.txt");
+		super(posMapPath);
 	}
 	
 	public boolean isConj(String pos){

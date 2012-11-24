@@ -1,20 +1,21 @@
 package sem.grapheditor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 import sem.graph.Edge;
 import sem.graph.Graph;
 import sem.graph.Node;
 
+/**
+ * GraphEditor for creating edges that bypass conjunctions
+ *
+ */
 public class BypassConjGraphEditor implements GraphEditor{
 	
 	private PosMap posMap;
 	
-	public BypassConjGraphEditor(){
-		this.posMap = new PosMap();
+	public BypassConjGraphEditor(String posMapPath){
+		this.posMap = new PosMap(posMapPath);
 	}
 	
 	@Override

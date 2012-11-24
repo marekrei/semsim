@@ -15,7 +15,7 @@ import sem.sim.SimMeasure;
 public class Similarity {
 	public static void main(String[] args) {
 		if(args.length == 2 || args.length == 4){
-			SemModel semModel = new SemModel(false, args[0]);
+			SemModel semModel = new SemModel(args[0], false);
 			if(semModel == null)
 				throw new RuntimeException("Model is null");
 			
@@ -23,6 +23,7 @@ public class Similarity {
 			if(simMeasure == null)
 				throw new RuntimeException("SimMeasureType is null");
 			
+			semModel.makeTensorSymmetric();
 			VectorSpace vectorSpace = new VectorSpace(semModel, VectorSpace.WEIGHT_PMI_LIM, true);
 			SimFinder simFinder = new SimFinder(vectorSpace);
 			

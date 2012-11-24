@@ -16,6 +16,10 @@ import sem.util.StringMap;
 import sem.util.Tools;
 import sem.util.FileReader;
 
+/**
+ * A class for generating expansion terms/hyponyms
+ *
+ */
 public class ExpansionFinder {
 
 	public static String generalPos(String pos){

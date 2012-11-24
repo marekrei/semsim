@@ -1,4 +1,4 @@
-package sem.apps;
+package sem.apps.hypgen;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -118,9 +118,10 @@ public class HyponymDetection {
 	 */
 	public static void main(String[] args) {
 		// Configuration variables
-		String modelPath = "/anfs/bigdisc/mr472/SemTensor/model1"; 
+		//String modelPath = "/anfs/bigdisc/mr472/SemTensor/model1"; 
+		String modelPath = "/anfs/bigdisc/mr472/semsim_models/model1"; 
 		
-		SemModel semModel = new SemModel(true, modelPath);
+		SemModel semModel = new SemModel(modelPath, true, false);
 		semModel.makeTensorSymmetric();
 		VectorSpace vectorSpace = new VectorSpace(semModel, VectorSpace.WEIGHT_PMI_LIM, true);
 		 

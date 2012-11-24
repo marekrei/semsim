@@ -6,6 +6,10 @@ import java.util.Arrays;
 import sem.graph.Graph;
 import sem.graph.Node;
 
+/**
+ * GraphEditor for converting numerical lemmas into more generic labels
+ *
+ */
 public class NumTagsGraphEditor implements GraphEditor{
 
 	private static ArrayList<String> numberWords = new ArrayList<String>(Arrays.asList("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "tweny-one", "twenty-two", "twenty-three", "twnety-four", "twenty-five", "twenty-six", "twenty-seven", "twenty-eight", "twenty-nine", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety", "hundred", "thousand", "million", "billion", "trillion"));

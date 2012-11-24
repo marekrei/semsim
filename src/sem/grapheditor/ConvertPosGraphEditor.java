@@ -2,8 +2,11 @@ package sem.grapheditor;
 
 import sem.graph.Graph;
 import sem.graph.Node;
-import sem.util.StringMap;
 
+/**
+ * GraphEditor for converting the POS labels
+ *
+ */
 public class ConvertPosGraphEditor implements GraphEditor{
 
 	private int conversionType;
@@ -15,9 +18,9 @@ public class ConvertPosGraphEditor implements GraphEditor{
 	public static int CONVERSION_1CHAR = 3;
 	public static int CONVERSION_2CHAR = 3;
 	
-	public ConvertPosGraphEditor(int conversionType){
+	public ConvertPosGraphEditor(int conversionType, String posMapPath){
 		this.conversionType = conversionType;
-		this.posMap = new PosMap();
+		this.posMap = new PosMap(posMapPath);
 	}
 	
 	@Override

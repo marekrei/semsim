@@ -1,4 +1,4 @@
-package sem.model;
+package sem.exception;
 
 public class SemModelException extends Exception{
 	public SemModelException(){

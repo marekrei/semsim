@@ -3,6 +3,10 @@ package sem.grapheditor;
 import sem.graph.Graph;
 import sem.graph.Node;
 
+/**
+ * GraphEditor for lowercasing lemmas
+ *
+ */
 public class LowerCaseGraphEditor implements GraphEditor{
 
 	@Override

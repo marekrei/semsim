@@ -1,21 +1,24 @@
 package sem.grapheditor;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 import sem.graph.Edge;
 import sem.graph.Graph;
 import sem.graph.Node;
 
+/**
+ * GraphEditor for creating additional edges between the subjects and objects of a verb
+ *
+ */
 public class CombineSubjObjGraphEditor implements GraphEditor{
 	
 	private int combineMode;
 	private PosMap posMap;
 	
-	public CombineSubjObjGraphEditor(int combineMode){
+	public CombineSubjObjGraphEditor(int combineMode, String posMapPath){
 		this.combineMode = combineMode;
-		this.posMap = new PosMap();
+		this.posMap = new PosMap(posMapPath);
 	}
 	
 	public boolean startsSubj(String label){

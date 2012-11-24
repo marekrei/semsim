@@ -47,7 +47,10 @@ class EdgeComparator implements Comparator<Edge>{
 	}
 }
 
-
+/**
+ * Creates a canonical string form of a graph 
+ *
+ */
 public class Canonicaliser {
 
 	public static String getString(Graph graph){
@@ -77,71 +80,4 @@ public class Canonicaliser {
 		
 		return str;
 	}
-	
-	/*
-	public static String getString(Graph graph){
-		ArrayList<Node> nodes = new ArrayList<Node>(graph.getNodes());
-		ArrayList<Edge> edges = new ArrayList<Edge>(graph.getEdges());
-		Collections.sort(nodes, new NodeComparator(nodes));
-		Collections.sort(edges, new EdgeComparator(nodes));
-		
-		ArrayList<String> strings = new ArrayList<String>();
-		
-		for(Node n : nodes){
-			strings.add(n.getLabel());
-		}
-		
-		if(edges.size() > 0)
-			strings.add("[GRS]");
-		
-		for(Edge e : edges){
-			strings.add(nodes.indexOf(e.getHead()) + "," + e.getLabel() + "," + nodes.indexOf(e.getDep()));
-		}
-		if(strings.size() == 0)
-			return "";
-		
-		return CSVUtils.printLine(strings.toArray(new String[strings.size()]));
-	}
-	*/
-	
-	
-	/*
-	public static Graph getGraph(String string){
-		Graph graph = new Graph();
-
-		
-		if(string == null || string.trim().length() == 0)
-			return graph;
-		string = string.trim();
-		String[] chunks;
-		try {
-			chunks = CSVUtils.parseLine(string);
-			String[] chunks2;
-			boolean inGrs = false;
-			for(String chunk : chunks){
-				if(chunk.compareTo("[GRS]") == 0){
-					inGrs = true;
-					continue;
-				}
-				
-				if(!inGrs){
-					int index = chunk.lastIndexOf('_');
-					if(index < 0)
-						System.out.println("ERR: " + string);
-					graph.addNode(chunk.substring(0, index), chunk.substring(index+1));
-				}
-				else {
-					chunks2 = chunk.split(",");
-					graph.addEdge(chunks2[1], 
-							graph.getNodes().get(Integer.parseInt(chunks2[0])), 
-							graph.getNodes().get(Integer.parseInt(chunks2[2])));
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		return graph;
-	}
-	*/
 }

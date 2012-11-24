@@ -25,7 +25,6 @@ class Article{
  * Processes the PubMed Central XML files, extracts files that match a certain criteria, and parses them with RASP.
  *
  */
-
 public class PMCProcessor {
 	
 	/**

@@ -5,7 +5,7 @@ Author:		Marek Rei (marek@marekrei.com)
 
 Version:	0.1
 
-Updated:	2012-09-16
+Updated:	2012-11-24
 
 Homepage:	<http://www.marekrei.com/projects/semsim/>
 
@@ -35,10 +35,10 @@ You can build a model like this:
 	
 For example:
 
-	java -cp bin:lib/trove.jar:lib/semgraph.jar sem.run.BuildModel rasp examples/rasp/pnp_1000.rasp.gz mymodel
+	java -cp semsim-0.1.jar:lib/trove-3.0.2.jar:semgraph-0.3.jar sem.run.BuildModel rasp examples/rasp/pnp_1000.rasp.gz mymodel
 
 This will create a distributional model into your working directory, in the form of several files with the prefix 'mymodel'. 
-When working with large datasets, you may need more memory. I was using Java argument -Xmx15G (giving 15GB of memory) when creating a model from the British National Corpus.
+When working with large datasets, you may need more memory. I was using 15GB of memory (-Xmx15G as Java argument) when creating a model from the British National Corpus.
 
 Next, we can find the similarity between two words:
 
@@ -46,9 +46,9 @@ Next, we can find the similarity between two words:
 	
 For example:
 
-	java -cp bin:lib/trove.jar:lib/semgraph.jar sem.run.Similarity mymodel cosine dance_NN1 ball_NN1
+	java -cp semsim-0.1.jar:lib/trove-3.0.2.jar:semgraph-0.3.jar sem.run.Similarity mymodel cosine dance_NN1 ball_NN1
 		
-	0.0680225984033961
+	0.04313027223556267
 
 This will load the SemModel prefixed by 'mymodel', and find the cosine similarity between dance_NN1 and ball_NN1. 
 Alternatively, you can run it in a loop by not providing the last two arguments. In this case, the method will wait for your input (two) words, output the similarity, and wait for more.
@@ -63,21 +63,21 @@ Finally, if we want to find the top most similar words for a specific word, we c
 	
 For example:
 
-	java -cp bin:lib/trove.jar:lib/semgraph.jar sem.run.MostSimilar mymodel cosine 5 5 man_NN1
+	java -cp semsim-0.1.jar:lib/trove-3.0.2.jar:semgraph-0.3.jar sem.run.MostSimilar mymodel cosine 5 5 man_NN1
 	
-	man_NN1			1.0
-	lady_NN1        0.45743573727142745
-	subject_NN1     0.352170789541605
-	people_NN       0.3359860811454337
-	woman_NN1       0.2907688844912349
+	man_NN1	1.0
+	lady_NN1	0.3020134423952073
+	woman_NN1	0.29328699273666575
+	people_NN	0.27926840361596206
+	subject_NN1	0.2664863271668703
 	
-This loads the SemModel prefixed by 'mymodel' and find words that are most similar to man_NN1, using cosine similarity. Frequencylimit sets the minimum frequency of a candidate word - in this case, words that occurred less than 4 times were not considered at all. Resultlimit sets the number of results to return.
+This loads the SemModel prefixed by 'mymodel' and find words that are most similar to man_NN1, using cosine similarity. Frequencylimit sets the minimum frequency of a candidate word - in this case, words that occurred less than 5 times were not considered at all. Resultlimit sets the number of results to return.
 This can also be run in a loop without terminating, by omitting the last argument:
 
 	java -cp bin:lib/trove.jar:lib/semgraph.jar sem.run.MostSimilar mymodel cosine 5 5
 	
 	
-Apart from these cases, the library can be included into your code and used in much more flexible ways. 
+In addition to these cases, the library can be included into your code and used in much more flexible ways. 
 Take a look at sem.examples.SemSimExample to see how the classes can be used:
 
 			// First, let's build the model
@@ -170,6 +170,7 @@ License
 -------
 
 This software is distributed under the GNU Affero General Public License version 3. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. The authors are not responsible for how it performs (or doesn't). See the GNU Affero General Public License for more details.
+
 You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 If you wish to use this software under a different license, feel free to contact me.

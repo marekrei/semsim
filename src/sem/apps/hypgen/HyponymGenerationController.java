@@ -1,4 +1,4 @@
-package sem.apps;
+package sem.apps.hypgen;
 
 import java.io.File;
 import java.util.Arrays;

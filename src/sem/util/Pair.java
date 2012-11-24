@@ -1,5 +1,10 @@
 package sem.util;
 
+/**
+ * Item pair
+ * 
+ * @param <T> Type of the items
+ */
 public class Pair<T>{
 	private T item1;
 	private T item2;

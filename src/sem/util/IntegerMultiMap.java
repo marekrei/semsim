@@ -5,7 +5,10 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
-
+/**
+ * An integer map, where each key can correspond to multiple values
+ *
+ */
 public class IntegerMultiMap extends java.util.HashMap<Integer,ArrayList<Integer>>{
 	
 	public IntegerMultiMap(){

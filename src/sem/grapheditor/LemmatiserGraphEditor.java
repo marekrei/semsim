@@ -4,6 +4,10 @@ import sem.graph.Graph;
 import sem.graph.Node;
 import sem.util.StringMap;
 
+/**
+ * GraphEditor for applying lemmatisation, based on a lemmamap
+ *
+ */
 public class LemmatiserGraphEditor implements GraphEditor{
 	private StringMap lemmaMap;
 	

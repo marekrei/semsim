@@ -1,20 +1,23 @@
 package sem.grapheditor;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 import sem.graph.Edge;
 import sem.graph.Graph;
 import sem.graph.Node;
 
+/**
+ * GraphEditor for creating edges that bypass adpositions
+ *
+ */
 public class BypassAdpGraphEditor implements GraphEditor{
 
 	private int bypassType;
 	private PosMap posMap;
 
-	public BypassAdpGraphEditor(int bypassType){
+	public BypassAdpGraphEditor(int bypassType, String posMapPath){
 		this.bypassType = bypassType;
-		this.posMap = new PosMap();
+		this.posMap = new PosMap(posMapPath);
 	}
 
 	

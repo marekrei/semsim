@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import sem.graph.Edge;
 import sem.graph.Graph;
 
+/**
+ * GraphEditor for adding reverse edges
+ *
+ */
 public class ReverseEdgesGraphEditor implements GraphEditor{
 
 	public static String reverseEdgePrefix = "rev_";

@@ -1,4 +1,4 @@
-package sem.apps;
+package sem.apps.hypgen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,11 +11,11 @@ import sem.grapheditor.CombineSubjObjGraphEditor;
 import sem.grapheditor.GraphEditor;
 import sem.grapheditor.LowerCaseGraphEditor;
 import sem.grapheditor.NumTagsGraphEditor;
-import sem.graphreader.GraphFormatException;
+import sem.exception.GraphFormatException;
+import sem.exception.SemModelException;
 import sem.graphreader.GraphReader;
 import sem.graphreader.RaspXmlGraphReader;
 import sem.model.SemModel;
-import sem.model.SemModelException;
 
 public class ModelBuilder {
 
@@ -64,6 +64,8 @@ public class ModelBuilder {
 		GraphReader graphReader;
 		String outputPath;
 		ArrayList<GraphEditor> graphEditors;
+		
+		String posMapPath = "/auto/homes/mr472/Documents/Projects/SemSim/tagsets/claws2-universal.txt";
 		
 		/*
 		 *  Model1
@@ -147,9 +149,9 @@ public class ModelBuilder {
 		graphEditors = new ArrayList<GraphEditor>(Arrays.asList(
 				new LowerCaseGraphEditor(),
 				new NumTagsGraphEditor(),
-				new BypassConjGraphEditor(),
-				new BypassAdpGraphEditor(3),
-				new CombineSubjObjGraphEditor(4),
+				new BypassConjGraphEditor(posMapPath),
+				new BypassAdpGraphEditor(3, posMapPath),
+				new CombineSubjObjGraphEditor(4, posMapPath),
 				new AddNodesGraphEditor(4)
 				));
 		

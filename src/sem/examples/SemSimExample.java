@@ -6,15 +6,15 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 
+import sem.exception.GraphFormatException;
+import sem.exception.SemModelException;
 import sem.graph.Graph;
 import sem.grapheditor.GraphEditor;
 import sem.grapheditor.LowerCaseGraphEditor;
 import sem.grapheditor.NumTagsGraphEditor;
-import sem.graphreader.GraphFormatException;
 import sem.graphreader.GraphReader;
 import sem.graphreader.RaspGraphReader;
 import sem.model.SemModel;
-import sem.model.SemModelException;
 import sem.model.VectorSpace;
 import sem.sim.SimFinder;
 import sem.sim.SimMeasure;

@@ -6,10 +6,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import sem.exception.SemModelException;
 import sem.graph.Graph;
 import sem.graph.Node;
 import sem.model.SemModel;
-import sem.model.SemModelException;
 import sem.test.util.ToolsTest;
 
 public class ModelTest {
@@ -133,7 +133,7 @@ public class ModelTest {
 		
 		vsm.save(file);
 		
-		SemModel vsm2 = new SemModel(true, file);
+		SemModel vsm2 = new SemModel(file, true);
 		testBasic(vsm2);
 		
 		assertTrue(vsm2.getTotalEdgeCount() == 8);

@@ -1,16 +1,21 @@
 package sem.apps.parsererank;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Random;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import sem.graph.Edge;
 import sem.graph.Graph;
 import sem.util.Tools;
 
-
+/**
+ * Functions for evaluating parsing and parse reranking
+ *
+ */
 public class ParseEvaluator {
 	
 	public static final int MATCH_UNLABELLED = 0;
@@ -453,7 +458,8 @@ public class ParseEvaluator {
 		return topGraphs;
 	}
 	
-	public static double calculateStatisticalSignificance(ArrayList<LinkedHashMap<Graph,Double>> baselineGraphs, ArrayList<LinkedHashMap<Graph,Double>> testGraphs, ArrayList<Graph> goldGraphs, int grTypeMatch){
+	public static LinkedHashMap<String,Double> calculateStatisticalSignificance(ArrayList<LinkedHashMap<Graph,Double>> baselineGraphs, ArrayList<LinkedHashMap<Graph,Double>> testGraphs, ArrayList<Graph> goldGraphs, int grTypeMatch){
+		LinkedHashMap<String,Double> results = new LinkedHashMap<String,Double>();
 		
 		ArrayList<Graph> topBaselineGraphs = getTopGraphs(baselineGraphs);
 		ArrayList<Graph> topTestGraphs = getTopGraphs(testGraphs);
@@ -493,13 +499,13 @@ public class ParseEvaluator {
 		fa = 2.0 * preca *reca / (preca + reca);
 		fb = 2.0 * precb *recb / (precb + recb);
 		double realDiff = Math.abs(fb-fa);
-		System.out.println("FA: " + fa);
-		System.out.println("FB: " + fb);
-		System.out.println("RealDiff: " + realDiff);
 		
+		results.put("fa", fa);
+		results.put("fb", fb);
+		results.put("realdiff", realDiff);
 		
 		// Random shuffles
-		int c = 0, R = 100000;
+		int c = 0, R = 1000000;
 		Random generator = new Random();
 		double random, randomDiff;
 		
@@ -541,9 +547,112 @@ public class ParseEvaluator {
 			}
 			//System.out.println("Shuffle " + i + " : " + randomDiff);
 		}
-		System.out.println("c=" + c + ", R=" + R);
+		
 		double p = ((double)c + 1.0)/((double)R + 1.0);
-		System.out.println("P:" + p);
-		return p;
+		
+		results.put("c", (double)c);
+		results.put("iter", (double)R);
+		results.put("p", p);
+		
+		return results;
+	}
+	
+	
+	public static String getTypeStatistics(ArrayList<LinkedHashMap<Graph,Double>> testGraphs, ArrayList<Graph> goldGraphs, int edgeMatchType){
+		ArrayList<Graph> topTestGraphs = getTopGraphs(testGraphs);
+		
+		LinkedHashMap<String,Double> sums = new LinkedHashMap<String,Double>();
+		LinkedHashMap<String,Double> testSums = new LinkedHashMap<String,Double>();
+		LinkedHashMap<String,Double> goldSums = new LinkedHashMap<String,Double>();
+		
+		if(topTestGraphs.size() != goldGraphs.size())
+			throw new RuntimeException("Mismatch in number of graphs: " + topTestGraphs.size() + " " + goldGraphs.size());
+		
+		for(String type : RaspGrTypeHierarchy.getTypes()){
+			sums.put(type, 0.0);
+			testSums.put(type, 0.0);
+			goldSums.put(type, 0.0);
+		}
+		
+		for(int i = 0; i < goldGraphs.size(); i++){
+			Graph testGraph = topTestGraphs.get(i);
+			Graph goldGraph = goldGraphs.get(i);
+			
+			for(Edge e : goldGraph.getEdges()){
+				if(e.getLabel().equals("passive"))
+					continue;
+				for(String t : RaspGrTypeHierarchy.getSubsumed(e.getLabel()))
+					goldSums.put(t, goldSums.get(t)+1.0);
+			}
+			
+			ArrayList<Edge> availableEdges = new ArrayList<Edge>();
+			
+			// The ellipses are placed at the bottom to maximize better matching.
+			// The ncsubj relations are placed at the bottom to match the official RASP evaluation code.
+			for(Edge e : testGraph.getEdges()){
+				if(!e.getHead().getLabel().equals(Graph.ellip.getLabel()) && !e.getDep().getLabel().equals(Graph.ellip.getLabel()) && !e.getLabel().equals("ncsubj"))
+					availableEdges.add(e);
+			}
+			for(Edge e : testGraph.getEdges()){
+				if(!e.getLabel().equals("ncsubj") && !availableEdges.contains(e))
+					availableEdges.add(e);
+			}
+			for(Edge e : testGraph.getEdges()){
+				if(e.getLabel().equals("ncsubj") && !availableEdges.contains(e))
+					availableEdges.add(e);
+			}
+			for(Edge e : testGraph.getEdges()){
+				if(e.getLabel().equals("passive"))
+					continue;
+				for(String t : RaspGrTypeHierarchy.getSubsumed(e.getLabel()))
+					testSums.put(t, testSums.get(t)+1.0);
+			}
+			
+			Edge goldEdge, testEdge, bestTestEdge;
+			double testEdgeScore, bestTestEdgeScore, overallScore = 0.0;
+			for(int j = 0; j < goldGraph.getEdges().size(); j++){
+				goldEdge = goldGraph.getEdges().get(j);
+				
+				if(goldEdge.getLabel().equals("passive"))
+					continue;
+				bestTestEdge = null;
+				bestTestEdgeScore = Double.MIN_VALUE;
+				for(int k = 0; k < availableEdges.size(); k++){
+					testEdge = availableEdges.get(k);
+					if(testEdge.getLabel().equals("passive"))
+						continue;
+					testEdgeScore = edgeMatch(testEdge, goldEdge, edgeMatchType);
+					if(testEdgeScore > 0 && testEdgeScore > bestTestEdgeScore){
+						bestTestEdgeScore = testEdgeScore;
+						bestTestEdge = testEdge;
+					}
+				}
+				if(bestTestEdge != null){
+					List<String> goldLabelTypes = RaspGrTypeHierarchy.getSubsumed(goldEdge.getLabel());
+					List<String> testLabelTypes = RaspGrTypeHierarchy.getSubsumed(bestTestEdge.getLabel());
+					
+					for(String t : goldLabelTypes){
+						if(testLabelTypes.contains(t))
+							sums.put(t, sums.get(t)+1.0);
+					}
+					
+					overallScore += bestTestEdgeScore;
+					availableEdges.remove(bestTestEdge);
+				}
+			}
+		}
+		
+		
+		ArrayList<String> edgeLabels = new ArrayList<String>(sums.keySet());
+		Collections.sort(edgeLabels);
+		String results = "Label\tCorrect\tTest\tGold\tPrec\tRec\tFmeasure\n";
+		for(String edgeLabel : edgeLabels){
+			double prec = sums.get(edgeLabel) / testSums.get(edgeLabel);
+			double rec = sums.get(edgeLabel) / goldSums.get(edgeLabel);
+			double f = 2 * prec * rec / (prec + rec);
+			results += (edgeLabel  + "\t" + sums.get(edgeLabel)  + "\t" + testSums.get(edgeLabel) + "\t" + goldSums.get(edgeLabel) + "\t" + prec + "\t" + rec + "\t" + f);
+			results += "\n";
+		}
+		return results;
 	}
 }

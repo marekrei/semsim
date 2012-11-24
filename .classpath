@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/SemGraph/bin"/>
 	<classpathentry kind="lib" path="lib/junit-4.10.jar"/>
 	<classpathentry kind="lib" path="lib/trove-3.0.2.jar"/>
-	<classpathentry kind="lib" path="/SemGraph/lib/prefuse.jar"/>
+	<classpathentry kind="lib" path="/semgraph/bin"/>
+	<classpathentry kind="lib" path="/semgraph/lib/prefuse.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
