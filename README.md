@@ -11,7 +11,7 @@ Homepage:	<http://www.marekrei.com/projects/semsim/>
 
 Download:	<https://github.com/marekrei/semsim>
 
-Documentation:	<http://www.marekrei.com/doc/semsim/>
+Documentation:	<http://www.marekrei.com/doc/semsim/0.1/>
 
 
 About
