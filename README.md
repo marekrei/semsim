@@ -9,7 +9,9 @@ Updated:	2013-03-17
 
 Homepage:	<http://www.marekrei.com/projects/semsim/>
 
-Download:	<https://github.com/marekrei/semsim>
+Source code:	<https://github.com/marekrei/semsim>
+
+Download JAR:	<http://www.marekrei.com/files/build/semsim-0.1.jar>
 
 Documentation:	<http://www.marekrei.com/doc/semsim/0.1/>
 
