@@ -161,11 +161,9 @@ The main code for the experiments can be found in  sem.apps.parsererank.ParseRer
 Dependencies
 ------------
 
-The SemGraph library is needed for reading the dependency graphs and for various generic classes: <https://github.com/marekrei/semgraph>
-
-Trove is needed for building the model, as we use their efficient hashmap implementations: <http://trove.starlight-systems.com/>
-
-The JUnit library needs to be included for the unit tests: <http://junit.sourceforge.net/>
+* The SemGraph library is needed for reading the dependency graphs and for various generic classes: <https://github.com/marekrei/semgraph>
+* Trove is needed for building the model, as we use their efficient hashmap implementations: <http://trove.starlight-systems.com/>
+* The JUnit library needs to be included for the unit tests: <http://junit.sourceforge.net/>
 
 
 Changes
