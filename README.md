@@ -5,7 +5,7 @@ Author:		Marek Rei (marek@marekrei.com)
 
 Version:	0.1
 
-Updated:	2012-11-24
+Updated:	2013-03-17
 
 Homepage:	<http://www.marekrei.com/projects/semsim/>
 
@@ -147,6 +147,15 @@ Take a look at sem.examples.SemSimExample to see how the classes can be used:
 				if(++count >= 10)
 					break;
 			}
+
+
+Parse reranking
+---------------
+
+This library was used for experiments with parse reranking, described in the following paper:
+Marek Rei & Ted Briscoe (2013). *Parser lexicalisation through self-learning*. In Proceedings of NAACL-HLT 2013.
+
+The main code for the experiments can be found in  sem.apps.parsererank.ParseRerank
 
 
 Dependencies
