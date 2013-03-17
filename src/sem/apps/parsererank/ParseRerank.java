@@ -253,7 +253,7 @@ public class ParseRerank {
 			String modelName = dataset.equalsIgnoreCase("genia")?"model4":"model3";
 			String modelPath = "/anfs/bigdisc/mr472/semsim_models/" + modelName;
 			String expansionListPath = "/anfs/bigdisc/mr472/corpora/ParseRerank/expansion/expansion-" + dataset + "-weightedCosine-hyponyms-" + modelName + ".txt.gz";
-			String posMapPath = "/auto/homes/mr472/Documents/Projects/SemSim/tagsets/claws2-universal.txt";
+			String posMapPath = "/auto/homes/mr472/Documents/Projects/semsim/tagsets/claws2-universal.txt";
 			int graphScorerType = GraphScorer.COMBINE_NODEAVG;
 			int numThreads = 8;
 			

@@ -3,18 +3,15 @@ package sem.apps.hypgen;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import sem.exception.GraphFormatException;
+import sem.exception.SemModelException;
 import sem.graph.Graph;
-import sem.grapheditor.AddNodesGraphEditor;
-import sem.grapheditor.BypassAdpGraphEditor;
-import sem.grapheditor.BypassConjGraphEditor;
-import sem.grapheditor.CombineSubjObjGraphEditor;
+import sem.grapheditor.ConvertPosGraphEditor;
 import sem.grapheditor.GraphEditor;
 import sem.grapheditor.LowerCaseGraphEditor;
 import sem.grapheditor.NumTagsGraphEditor;
-import sem.exception.GraphFormatException;
-import sem.exception.SemModelException;
 import sem.graphreader.GraphReader;
-import sem.graphreader.RaspXmlGraphReader;
+import sem.graphreader.TSVGraphReader;
 import sem.model.SemModel;
 
 public class ModelBuilder {
@@ -71,7 +68,7 @@ public class ModelBuilder {
 		 *  Model1
 		 *  Source: BNC/tsv (/anfs/bigdisc/mr472/corpora/BNC/tsv/)
 		 */
-		/*
+		
 		try {
 			graphReader = new TSVGraphReader("/anfs/bigdisc/mr472/corpora/BNC/tsv/", false);
 		} catch (GraphFormatException e) {
@@ -79,11 +76,11 @@ public class ModelBuilder {
 		}
 		outputPath = "/anfs/bigdisc/mr472/semsim_models/model1";
 		graphEditors = new ArrayList<GraphEditor>(Arrays.asList(
-				new ConvertPosGraphEditor(ConvertPosGraphEditor.CONVERSION_POSMAP),
+				new ConvertPosGraphEditor(ConvertPosGraphEditor.CONVERSION_POSMAP, posMapPath),
 				new LowerCaseGraphEditor(),
 				new NumTagsGraphEditor()
 				));
-		*/
+		
 		
 		/*
 		 * Model2
@@ -99,7 +96,7 @@ public class ModelBuilder {
 		}
 		outputPath = "/anfs/bigdisc/mr472/semsim_models/model2";
 		graphEditors = new ArrayList<GraphEditor>(Arrays.asList(
-				//new ConvertPosGraphEditor(ConvertPosGraphEditor.CONVERSION_NONE),
+				//new ConvertPosGraphEditor(ConvertPosGraphEditor.CONVERSION_NONE, posMapPath),
 				new LowerCaseGraphEditor(),
 				new NumTagsGraphEditor(),
 				new BypassConjGraphEditor(),
@@ -139,7 +136,7 @@ public class ModelBuilder {
 		 * Source: PMCOA-subset. Filtered to contain any of ("nf-kappa b", "nf-kappab", "nf kappa b", "nf-kappa_b", "nf-kb", "nf-κb")
 		 * Total: 1623846 graphs
 		 */
-		
+		/*
 		try {
 			graphReader = new RaspXmlGraphReader("/local/scratch/mr472/corpora/PMCOA-subset/parsed/", RaspXmlGraphReader.NODES_TOKENS, false, true);
 		} catch (GraphFormatException e) {
@@ -154,11 +151,10 @@ public class ModelBuilder {
 				new CombineSubjObjGraphEditor(4, posMapPath),
 				new AddNodesGraphEditor(4)
 				));
-		
-		
-		
+		*/
 		
 		createModel(graphReader, graphEditors, outputPath);
+
 	}
 
 }
